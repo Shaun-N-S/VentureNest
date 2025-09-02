@@ -1,8 +1,8 @@
 import { ICreateUserUseCase } from "../../../domain/interfaces/useCases/ICreateUser";
 import { IUserRepository } from "../../../domain/interfaces/repositories/IUserRepository";
-import { CreateUserDTO, CreateUserResponseDTO } from "../../dtos/createUserDTO";
+import { CreateUserDTO, CreateUserResponseDTO } from "../../dtos/User/createUserDTO";
 import { IHashPasswordService } from "../../../domain/interfaces/services/IHashPasswordService";
-import { messages } from "../../../shared/constants/messages";
+import { USER_ERRORS } from "../../../shared/constants/errors";
 
 export class RegisterUserUseCase implements ICreateUserUseCase {
   constructor(
@@ -14,7 +14,7 @@ export class RegisterUserUseCase implements ICreateUserUseCase {
     // console.log(user);
     const existing = await this._userRepository.findByEmail(user.email);
     if (existing) {
-      throw new Error(messages.USER_ALREADY_EXISTS);
+      throw new Error(USER_ERRORS.USER_ALREADY_EXISTS);
     }
 
     user.password = await this._hashService.hashPassword(user.password);
@@ -24,12 +24,9 @@ export class RegisterUserUseCase implements ICreateUserUseCase {
       _id: saved._id!,
       userName: saved.userName,
       email: saved.email,
-      interestedTopics: saved.interestedTopics,
-      linkedInUrl: saved.linkedInUrl,
-      profileImg: saved.profileImg,
       role: saved.role,
       status: saved.status,
-      createdAt: saved.createdAt,
+      isFirstLogin: saved.isFirstLogin,
       updatedAt: saved.updatedAt,
     };
     console.log(response);

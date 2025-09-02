@@ -1,16 +1,16 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { persistReducer, persistStore } from "redux-persist";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import tokenSlice from "@/store/slice/User/tokenSlice";
 import storage from "redux-persist/lib/storage";
-import { formReducer } from "./slice/User/authSlice";
-import { combineReducers } from "redux";
+import { persistReducer, persistStore } from "redux-persist";
 
 const persistConfig = {
   key: "root",
   storage,
+  Blacklist: ["token"],
 };
 
 const rootReducer = combineReducers({
-  form: formReducer,
+  token: tokenSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -21,5 +21,7 @@ export const store = configureStore({
 
 export const persistor = persistStore(store);
 
-export type RootState = ReturnType<typeof store.getState>;
+export type Rootstate = ReturnType<typeof store.getState>;
+
 export type AppDispatch = typeof store.dispatch;
+export type AppStore = typeof store;

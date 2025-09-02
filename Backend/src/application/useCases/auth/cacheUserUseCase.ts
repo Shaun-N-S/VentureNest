@@ -1,4 +1,4 @@
-import { LoginUserDTO } from "application/dtos/loginUserDTO";
+import { LoginUserDTO } from "application/dtos/User/loginUserDTO";
 import { IKeyValueTTLCaching } from "domain/interfaces/services/ICache/IKeyValueTTLCaching";
 import { ICacheUserUseCase } from "domain/interfaces/useCases/ICacheUser";
 

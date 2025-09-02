@@ -1,8 +1,8 @@
 // src/interfaceAdapters/routes/userRoutes.ts
 import { Router, Request, Response } from "express";
-import { injectedRegisterUserController } from "../../infrastructure/DI/authContainer";
+import { injectedRegisterUserController } from "infrastructure/DI/User/authContainer";
 
-export class Auth_Router {
+export class User_Router {
   private _router: Router;
 
   constructor() {
@@ -19,16 +19,24 @@ export class Auth_Router {
       injectedRegisterUserController.registerUser(req, res);
     });
 
-    this._router.post("/verify-otp2", (req: Request, res: Response) => {
-      injectedRegisterUserController.verifyOtp(req, res);
+    this._router.post("/forgot-password-verify-otp", (req: Request, res: Response) => {
+      injectedRegisterUserController.forgetPasswordVerifyOtp(req, res);
     });
 
     this._router.post("/login", (req: Request, res: Response) => {
       injectedRegisterUserController.login(req, res);
     });
 
+    // this._router.patch("/profile-update",(req:Request,res:Response)=>{
+    //   injectedRegisterUserController.
+    // })
+
     this._router.post("/forget-password", (req: Request, res: Response) => {
       injectedRegisterUserController.forgetPassword(req, res);
+    });
+
+    this._router.post("/reset-password", (req: Request, res: Response) => {
+      injectedRegisterUserController.resetPassword(req, res);
     });
   }
 

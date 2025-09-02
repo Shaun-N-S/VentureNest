@@ -8,7 +8,7 @@ export class mongoConnect {
         await mongoose.connect(CONFIG.MONGO_URL);
         console.log("mongodb connected");
       } else {
-        throw new Error("Invalid mongodb url or url not found in env");
+        throw new Error("Invalid mongodb url or url not found in config");
       }
     } catch (error) {
       if (error instanceof Error) {

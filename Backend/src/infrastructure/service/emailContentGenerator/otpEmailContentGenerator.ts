@@ -42,6 +42,6 @@ export class OtpEmailContentGenerator
       </table>
     `;
 
-    return this.htmlWrapper(this.generateHeader() + body + this.generateFooter());
+    return this.htmlWrapper(body);
   }
 }

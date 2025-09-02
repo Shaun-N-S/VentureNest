@@ -3,7 +3,8 @@ import { mongoConnect } from "infrastructure/db/connectDB/mongoConnect";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { CONFIG } from "config/config";
-import { Auth_Router } from "interfaceAdapters/routes/authRoutes";
+import { User_Router } from "interfaceAdapters/routes/userRoutes";
+import { Investor_Router } from "interfaceAdapters/routes/investorRoutes";
 
 class Express_app {
   private _app: Express;
@@ -36,7 +37,8 @@ class Express_app {
   }
 
   private _setRoutes() {
-    this._app.use("/auth", new Auth_Router().get_router());
+    this._app.use("/users", new User_Router().get_router());
+    this._app.use("/investors", new Investor_Router().get_router());
   }
 }
 

@@ -1,8 +1,18 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ArrowRight, Users, TrendingUp, Shield, Star, CheckCircle } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
 export default function LandingPage() {
+
+    const navigate = useNavigate();
+
+    const handleSignUp = ()=>{
+        console.log('reached')
+        navigate('/login')
+    }
+
+    
     return (
         <div className="min-h-screen bg-slate-50">
             {/* Navigation */}
@@ -22,7 +32,7 @@ export default function LandingPage() {
                             <a href="#for-investors" className="text-slate-600 hover:text-slate-900 transition-colors">
                                 For Investors
                             </a>
-                            <Button variant="outline" size="sm">
+                            <Button variant="outline" size="sm" onClick={handleSignUp}>
                                 Sign In
                             </Button>
                         </div>

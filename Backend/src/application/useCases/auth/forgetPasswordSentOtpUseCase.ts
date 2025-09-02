@@ -4,9 +4,9 @@ import { IBaseEmailTemplate } from "domain/interfaces/services/IEmail/IBaseEmail
 import { IEmailService } from "domain/interfaces/services/IEmail/IEmailService";
 import { IOtpEmailTemplate } from "domain/interfaces/services/IEmail/IOtpEmailTemplate";
 import { IOtpService } from "domain/interfaces/services/IOtp/IOtpService";
-import { IForgetPasswordSendOtpUseCase } from "domain/interfaces/useCases/IForgetPassword";
+import { IForgetPasswordSendOtpUseCase } from "domain/interfaces/useCases/IForgetPasswordSentOtp";
 
-export class ForgetPasswordUseCase implements IForgetPasswordSendOtpUseCase {
+export class ForgetPasswordSentOtpUseCase implements IForgetPasswordSendOtpUseCase {
   constructor(
     private _userRepository: IUserRepository,
     private _otpService: IOtpService,
