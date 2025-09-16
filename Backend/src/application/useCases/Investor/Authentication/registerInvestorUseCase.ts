@@ -1,9 +1,12 @@
-import { Errors, USER_ERRORS } from "@shared/constants/errors";
-import { CreateInvestorResponseDTO } from "application/dtos/Investor/createInvestorDTO";
-import { Investor } from "domain/entities/investor/investorEntity";
+import { USER_ERRORS } from "@shared/constants/errors";
+import {
+  CreateInvestorDTO,
+  CreateInvestorResponseDTO,
+} from "application/dtos/Investor/createInvestorDTO";
 import { IInvestorRepository } from "domain/interfaces/repositories/IInvestorRepository";
 import { IHashPasswordService } from "domain/interfaces/services/IHashPasswordService";
-import { ICreateInvestorUseCase } from "domain/interfaces/useCases/ICreateInvestor";
+import { ICreateInvestorUseCase } from "domain/interfaces/useCases/investor/ICreateInvestor";
+import { InvestorMapper } from "application/mappers/investorMappers";
 
 export class RegisterInvestorUseCase implements ICreateInvestorUseCase {
   constructor(
@@ -11,39 +14,17 @@ export class RegisterInvestorUseCase implements ICreateInvestorUseCase {
     private _hashService: IHashPasswordService
   ) {}
 
-  async createInvestor(investor: Investor): Promise<CreateInvestorResponseDTO> {
-    console.log(investor);
-
-    const existing = await this._investorRepository.findByEmail(investor.email);
+  async createInvestor(dto: CreateInvestorDTO): Promise<CreateInvestorResponseDTO> {
+    const existing = await this._investorRepository.findByEmail(dto.email);
 
     if (existing) {
       throw new Error(USER_ERRORS.USER_ALREADY_EXISTS);
     }
 
-    investor.password = await this._hashService.hashPassword(investor.password);
+    const hashedPassword = await this._hashService.hashPassword(dto.password);
+    const investorEntity = InvestorMapper.toEntity({ ...dto, password: hashedPassword });
 
-    const saved = await this._investorRepository.create(investor);
-    const response: CreateInvestorResponseDTO = {
-      _id: saved._id!,
-      userName: saved.userName,
-      email: saved.email,
-      linkedInUrl: saved.linkedInUrl,
-      profileImg: saved.profileImg,
-      bio: saved.bio,
-      website: saved.website,
-      role: saved.role,
-      status: saved.status,
-      location: saved.location,
-      companyName: saved.companyName,
-      experience: saved.experience,
-      preferredSector: saved.preferredSector,
-      preferredStartupStage: saved.preferredStartupStage,
-      isFirstLogin: saved.isFirstLogin,
-      updatedAt: saved.updatedAt,
-      createdAt: saved.createdAt,
-    };
-    console.log("response:", response);
-    console.log("saved", saved);
-    return response;
+    const saved = await this._investorRepository.save(investorEntity);
+    return InvestorMapper.toCreateInvestorResponseDTO(saved);
   }
 }

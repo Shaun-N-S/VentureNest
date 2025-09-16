@@ -1,5 +1,6 @@
 import { Errors, USER_ERRORS } from "@shared/constants/errors";
 import { LoginUserDTO } from "application/dtos/User/loginUserDTO";
+import { UserMapper } from "application/mappers/userMappers";
 import { UserStatus } from "domain/enums/userStatus";
 import { IUserRepository } from "domain/interfaces/repositories/IUserRepository";
 import { IHashPasswordService } from "domain/interfaces/services/IHashPasswordService";
@@ -31,20 +32,8 @@ export class UserLoginUseCase implements IUserLoginUseCase {
       throw new Error(Errors.INVALID_CREDENTIALS);
     }
 
-    const responseData: LoginUserDTO = {
-      _id: user._id!,
-      email: user.email,
-      userName: user.userName,
-      interestedTopics: user.interestedTopics,
-      role: user.role,
-      status: user.status,
-      isFirstLogin: user.isFirstLogin,
-      linkedInUrl: user.linkedInUrl,
-      profileImg: user.profileImg,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    };
+    const response: LoginUserDTO = UserMapper.toLoginUserResponseDTO(user);
 
-    return responseData;
+    return response;
   }
 }

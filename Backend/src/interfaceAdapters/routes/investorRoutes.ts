@@ -1,4 +1,5 @@
-import { injectedRegisterUserController } from "@infrastructure/DI/User/authContainer";
+// import { injectedRegisterUserController } from "@infrastructure/DI/authContainer";
+import { investorAuthController } from "@infrastructure/DI/authContainer";
 import { Router, Request, Response } from "express";
 
 export class Investor_Router {
@@ -10,12 +11,20 @@ export class Investor_Router {
   }
 
   private _setRoute() {
-    this._router.post("/investors", (req: Request, res: Response) => {
-      injectedRegisterUserController.sendOtp(req, res);
+    this._router.post("/signup", (req: Request, res: Response) => {
+      investorAuthController.sendOtp(req, res);
     });
 
-    this._router.post("/investor/verify", (req: Request, res: Response) => {
-      injectedRegisterUserController.registerInvestor(req, res);
+    this._router.post("/verify-otp", (req: Request, res: Response) => {
+      investorAuthController.registerInvestor(req, res);
+    });
+
+    this._router.post("/resend-otp", (req: Request, res: Response) => {
+      investorAuthController.sendOtp(req, res);
+    });
+
+    this._router.post("/login", (req: Request, res: Response) => {
+      investorAuthController.investorLogin(req, res);
     });
   }
 

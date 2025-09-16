@@ -5,7 +5,7 @@ import { PreferredSector } from "domain/enums/preferredSectors";
 import { StartupStage } from "domain/enums/startupStages";
 import { Investor } from "domain/entities/investor/investorEntity";
 
-const investorSchema = new mongoose.Schema<Investor>(
+const investorSchema = new mongoose.Schema(
   {
     userName: { type: String, required: true },
     email: { type: String, required: true, unique: true },

@@ -1,6 +1,7 @@
 import { USER_ERRORS } from "@shared/constants/errors";
-import { BaseUser } from "domain/entities/user/baseUserEntity";
-import { IBaseRepository } from "domain/interfaces/repositories/IBaseRepository";
+import { User } from "domain/entities/user/userEntity";
+import { IInvestorRepository } from "domain/interfaces/repositories/IInvestorRepository";
+import { IUserRepository } from "domain/interfaces/repositories/IUserRepository";
 import { IKeyValueTTLCaching } from "domain/interfaces/services/ICache/IKeyValueTTLCaching";
 import { IOtpEmailContentGenerator } from "domain/interfaces/services/IEmail/IEmailContentGenerator";
 import { IEmailService } from "domain/interfaces/services/IEmail/IEmailService";
@@ -12,25 +13,25 @@ export class SentOtpUseCase implements ISendOtpUseCase {
   private _otpService: IOtpService;
   private _otpTemplateGenerator: IOtpEmailContentGenerator;
   private _emailService: IEmailService;
-  private _baseRepository: IBaseRepository<BaseUser>;
+  private _userRepository: IUserRepository | IInvestorRepository;
   private _cacheStorage: IKeyValueTTLCaching;
 
   constructor(
     otpService: IOtpService,
     otpTemplateGenerator: IOtpEmailContentGenerator,
     emailService: IEmailService,
-    baseRepository: IBaseRepository<BaseUser>,
+    userRepository: IUserRepository,
     cacheStorage: IKeyValueTTLCaching
   ) {
     this._otpService = otpService;
     this._otpTemplateGenerator = otpTemplateGenerator;
     this._emailService = emailService;
-    this._baseRepository = baseRepository;
+    this._userRepository = userRepository;
     this._cacheStorage = cacheStorage;
   }
 
   async sendOtp(email: string): Promise<void> {
-    const existingEmail = await this._baseRepository.findByEmail(email);
+    const existingEmail = await this._userRepository.findByEmail(email);
     if (existingEmail) {
       throw new Error(USER_ERRORS.USER_ALREADY_EXISTS);
     }

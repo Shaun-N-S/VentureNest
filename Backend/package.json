@@ -16,6 +16,7 @@
     "multer": "^2.0.2",
     "nodemailer": "^7.0.5",
     "redis": "^5.8.1",
+    "rotating-file-stream": "^3.2.7",
     "tsyringe": "^4.10.0",
     "uuid": "^11.1.0",
     "zod": "^4.0.17"
@@ -56,5 +57,6 @@
     "start": "node dist/app.js",
     "lint": "eslint .",
     "format": "prettier --write ."
-  }
+  },
+  "type": "commonjs"
 }

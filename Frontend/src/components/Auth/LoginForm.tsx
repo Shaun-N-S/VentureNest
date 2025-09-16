@@ -8,7 +8,11 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+// import AxiosInstance from "@/axios/axios"
+// import axios from "axios"
 // import { Checkbox } from "@/components/ui/checkbox"
+
+// import { useState } from "react"
 
 
 function EyeIcon(props: React.SVGProps<SVGSVGElement>) {
@@ -37,39 +41,32 @@ const loginSchema = z.object({
   email: z.string().min(1, "Email is required").email("Enter a valid email"),
   password: z
     .string()
-    .min(8, "At least 8 characters")
-    .regex(/[a-z]/, "Include a lowercase letter")
-    .regex(/[A-Z]/, "Include an uppercase letter")
-    .regex(/[0-9]/, "Include a number"),
-  remember: z.boolean()//.optional().default(false),
+    .min(5, "At least 8 characters")
+  //   .regex(/[a-z]/, "Include a lowercase letter")
+  //   .regex(/[A-Z]/, "Include an uppercase letter")
+  //   .regex(/[0-9]/, "Include a number"),
+  // remember: z.boolean()//.optional().default(false),
 })
 
-type LoginValues = z.infer<typeof loginSchema>
+export type LoginValues = z.infer<typeof loginSchema>
+export type PropTypes = { callback: ( values:LoginValues) => void }
 
-export function LoginForm() {
+export function LoginForm({ callback }:PropTypes) {
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    // watch,
-    // setValue,
   } = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
-      password: "",
-      remember: false,
+      password: ""
     },
     mode: "onChange",
   })
 
   const [showPassword, setShowPassword] = React.useState(false)
-
-  const onSubmit = async (values: LoginValues) => {
-    // Replace with your real auth
-    console.log("[v0] login submit:", values)
-    // You could dispatch to Redux or call an API route here
-  }
 
   return (
     <Card className="border-muted/40 shadow-sm">
@@ -147,15 +144,15 @@ export function LoginForm() {
       <CardFooter className="grid gap-3">
         <Button
           type="submit"
-          onClick={handleSubmit(onSubmit)}
+          onClick={handleSubmit(callback)}
           disabled={isSubmitting}
           className="w-full bg-primary text-primary-foreground hover:opacity-95"
         >
           {isSubmitting ? "Signing in..." : "Sign in"}
         </Button>
-        <Button variant="outline" asChild className="w-full bg-transparent">
+        {/* <Button variant="outline" asChild className="w-full bg-transparent">
           <Link to="/signup">Create new account</Link>
-        </Button>
+        </Button> */}
       </CardFooter>
     </Card>
   )

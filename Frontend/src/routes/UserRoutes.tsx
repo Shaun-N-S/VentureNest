@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
-import LandingPage from '../pages/LandingPage'
-import SignUpPage from '@/pages/SignUpPage'
-import LoginPage from '@/pages/LoginPage'
+import LandingPage from '../pages/LandingPages/LandingPage'
+import SignUpPage from '@/pages/user/authentication/SignUpPage'
+import LoginPage from '@/pages/user/authentication/UserLoginPage'
 const UserRoutes = () => {
     return (
         <Routes>

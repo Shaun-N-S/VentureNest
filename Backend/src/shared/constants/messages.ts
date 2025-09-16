@@ -14,4 +14,8 @@ export const messages = {
   //     BLOCKED_USER: "User blocked successfully.",
   //     UNBLOCKED_USER: "User unblocked successfully.",
   //   },
+
+  Otp: {
+    OTP_SUCCESSFULL: "Otp sent successfully",
+  },
 };

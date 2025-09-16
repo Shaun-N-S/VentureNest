@@ -1,9 +1,9 @@
-import { CreateInvestorDTO } from "application/dtos/Investor/createInvestorDTO";
 import { Investor } from "domain/entities/investor/investorEntity";
-import { IBaseRepository } from "./IBaseRepository";
 
-export interface IInvestorRepository extends IBaseRepository<Investor> {
-  createInvestor(investor: CreateInvestorDTO): Promise<Investor>;
-  // findByEmail(email: string): Promise<Investor | null>;
-  // findById(id: ObjectId): Promise<Investor | null>;
+export interface IInvestorRepository {
+  save(data: Investor): Promise<Investor>;
+  // findById(id: string): Promise<>;
+  findByEmail(email: string): Promise<Investor | null>;
+  // deleteById(id: string): Promise<void>;
+  updatePassword(email: string, password: string): Promise<void>;
 }

@@ -1,27 +1,31 @@
 import { IUserRepository } from "domain/interfaces/repositories/IUserRepository";
-import { BaseUser } from "domain/entities/user/baseUserEntity";
-import { userModel } from "@infrastructure/db/models/userModel";
+import { User } from "domain/entities/user/userEntity";
 import { Model } from "mongoose";
-import { BaseRepository } from "./baseRepository";
-import { CreateUserDTO, CreateUserResponseDTO } from "application/dtos/User/createUserDTO";
+import { UserMapper } from "application/mappers/userMappers";
+import { IuserModel } from "@infrastructure/db/models/userModel";
 
-export class UserRepository extends BaseRepository<BaseUser> implements IUserRepository {
-  constructor(protected _userModel: Model<BaseUser>) {
-    super(_userModel);
+export class UserRepository implements IUserRepository {
+  constructor(protected _userModel: Model<IuserModel>) {}
+
+  async save(user: User): Promise<User> {
+    const userData = UserMapper.toMongooseDocument(user);
+    const doc = await this._userModel.create(userData);
+    return UserMapper.fromMongooseDocument(doc);
   }
 
-  async createUser(user: CreateUserDTO): Promise<CreateUserResponseDTO> {
-    const createdUser = await userModel.create(user);
-    return createdUser.toObject<CreateUserResponseDTO>();
+  async findByEmail(email: string): Promise<User | null> {
+    const doc = await this._userModel.findOne({ email });
+    if (!doc) return null;
+    return UserMapper.fromMongooseDocument(doc);
+  }
+
+  async findById(id: string): Promise<User | null> {
+    const doc = await this._userModel.findById(id);
+    if (!doc) return null;
+    return UserMapper.fromMongooseDocument(doc);
   }
 
   async updatePassword(email: string, password: string): Promise<void> {
     await this._userModel.updateOne({ email }, { $set: { password } });
   }
-  // async findByEmail(email: string): Promise<BaseUser | null> {
-  //   return await userModel.findOne({ email });
-  // }
-  // async findById(id: ObjectId): Promise<BaseUser | null> {
-  //   return await userModel.findById(id);
-  // }
 }

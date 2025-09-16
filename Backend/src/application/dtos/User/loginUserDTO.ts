@@ -1,14 +1,12 @@
-import { BaseUser } from "domain/entities/user/baseUserEntity";
+import { UserRole } from "domain/enums/userRole";
+import { UserStatus } from "domain/enums/userStatus";
 
-export interface LoginUserDTO
-  extends Omit<
-    BaseUser,
-    | "password"
-    | "verifiedAt"
-    | "adminVerified"
-    | "dateOfBirth"
-    | "phoneNumber"
-    | "address"
-    | "aadharImg"
-    | "selfieImg"
-  > {}
+export interface LoginUserDTO {
+  _id: string;
+  userName: string;
+  email: string;
+  role: UserRole;
+  status: UserStatus;
+  isFirstLogin: boolean;
+  updatedAt: Date;
+}

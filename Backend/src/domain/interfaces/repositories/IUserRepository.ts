@@ -1,11 +1,10 @@
-import { ObjectId } from "mongoose";
-import { BaseUser } from "domain/entities/user/baseUserEntity";
 import { CreateUserDTO, CreateUserResponseDTO } from "application/dtos/User/createUserDTO";
-import { IBaseRepository } from "./IBaseRepository";
+import { User } from "domain/entities/user/userEntity";
 
-export interface IUserRepository extends IBaseRepository<CreateUserDTO> {
+export interface IUserRepository {
+  save(data: User): Promise<User>;
+  // findById(id: string): Promise<>;
+  findByEmail(email: string): Promise<User | null>;
+  // deleteById(id: string): Promise<void>;
   updatePassword(email: string, password: string): Promise<void>;
-  createUser(user: CreateUserDTO): Promise<CreateUserResponseDTO>;
-  findByEmail(email: string): Promise<BaseUser | null>;
-  // findById(id: ObjectId): Promise<BaseUser | null>;
 }

@@ -2,9 +2,8 @@ import mongoose from "mongoose";
 import { UserRole } from "../../../domain/enums/userRole";
 import { UserStatus } from "../../../domain/enums/userStatus";
 import { PreferredSector } from "../../../domain/enums/preferredSectors";
-import { BaseUser } from "domain/entities/user/baseUserEntity";
 
-const userSchema = new mongoose.Schema<BaseUser>(
+const userSchema = new mongoose.Schema(
   {
     userName: { type: String, required: true },
     email: {

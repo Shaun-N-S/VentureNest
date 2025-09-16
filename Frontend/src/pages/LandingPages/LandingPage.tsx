@@ -7,9 +7,12 @@ export default function LandingPage() {
 
     const navigate = useNavigate();
 
-    const handleSignUp = ()=>{
-        console.log('reached')
+    const handleUserSignUp = ()=>{
         navigate('/login')
+    }
+
+    const handleInvestorSignUp = () =>{
+        navigate('/investor/signup')
     }
 
     
@@ -32,9 +35,9 @@ export default function LandingPage() {
                             <a href="#for-investors" className="text-slate-600 hover:text-slate-900 transition-colors">
                                 For Investors
                             </a>
-                            <Button variant="outline" size="sm" onClick={handleSignUp}>
+                            {/* <Button variant="outline" size="sm" onClick={handleSignUp}>
                                 Sign In
-                            </Button>
+                            </Button> */}
                         </div>
                     </div>
                 </div>
@@ -60,11 +63,12 @@ export default function LandingPage() {
                             Join thousands of successful partnerships built on our platform.
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                            <Button size="lg" className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 text-lg">
+                            <Button  onClick={handleUserSignUp} size="lg" className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 text-lg">
                                 Join as Founder
                                 <ArrowRight className="ml-2 h-5 w-5" />
                             </Button>
-                            <Button
+                            <Button 
+                                onClick={handleInvestorSignUp}
                                 size="lg"
                                 variant="secondary"
                                 className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 text-lg"
