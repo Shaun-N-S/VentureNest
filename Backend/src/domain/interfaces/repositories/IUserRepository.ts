@@ -1,9 +1,10 @@
-import { ObjectId } from "mongoose";
-import { BaseUser } from "domain/entities/user/baseUserEntity";
-import { CreateUserDTO } from "application/dtos/createUserDTO";
+import { CreateUserDTO, CreateUserResponseDTO } from "application/dtos/User/createUserDTO";
+import { User } from "domain/entities/user/userEntity";
 
 export interface IUserRepository {
-  createUser(user: CreateUserDTO): Promise<BaseUser>;
-  findByEmail(email: string): Promise<BaseUser | null>;
-  findById(id: ObjectId): Promise<BaseUser | null>;
+  save(data: User): Promise<User>;
+  // findById(id: string): Promise<>;
+  findByEmail(email: string): Promise<User | null>;
+  // deleteById(id: string): Promise<void>;
+  updatePassword(email: string, password: string): Promise<void>;
 }

@@ -1,19 +1,31 @@
 import { IUserRepository } from "domain/interfaces/repositories/IUserRepository";
-import { BaseUser } from "domain/entities/user/baseUserEntity";
-import { userModel } from "@infrastructure/db/models/userModel";
-import { ObjectId } from "mongoose";
+import { User } from "domain/entities/user/userEntity";
+import { Model } from "mongoose";
+import { UserMapper } from "application/mappers/userMappers";
+import { IuserModel } from "@infrastructure/db/models/userModel";
 
 export class UserRepository implements IUserRepository {
-  async createUser(user: BaseUser): Promise<BaseUser> {
-    const createdUser = await userModel.create(user);
-    return createdUser.toObject<BaseUser>();
+  constructor(protected _userModel: Model<IuserModel>) {}
+
+  async save(user: User): Promise<User> {
+    const userData = UserMapper.toMongooseDocument(user);
+    const doc = await this._userModel.create(userData);
+    return UserMapper.fromMongooseDocument(doc);
   }
 
-  async findByEmail(email: string): Promise<BaseUser | null> {
-    return await userModel.findOne({ email });
+  async findByEmail(email: string): Promise<User | null> {
+    const doc = await this._userModel.findOne({ email });
+    if (!doc) return null;
+    return UserMapper.fromMongooseDocument(doc);
   }
 
-  async findById(id: ObjectId): Promise<BaseUser | null> {
-    return await userModel.findById(id);
+  async findById(id: string): Promise<User | null> {
+    const doc = await this._userModel.findById(id);
+    if (!doc) return null;
+    return UserMapper.fromMongooseDocument(doc);
+  }
+
+  async updatePassword(email: string, password: string): Promise<void> {
+    await this._userModel.updateOne({ email }, { $set: { password } });
   }
 }

@@ -1,3 +1,4 @@
+import { Errors } from "@shared/constants/errors";
 import { IKeyValueTTLCaching } from "domain/interfaces/services/ICache/IKeyValueTTLCaching";
 import { IVerifyOtpUseCase } from "domain/interfaces/useCases/IVerifyOtp";
 
@@ -12,7 +13,7 @@ export class VerifyOtpUseCase implements IVerifyOtpUseCase {
     const cachedOtp = await this._cacheStorage.getData(`otp/${email}`);
     console.log(cachedOtp);
     if (!cachedOtp) {
-      throw new Error("OTP expired or OTP not required");
+      throw new Error(Errors.OTP_MISSING);
     }
     const otpVerified = otp === cachedOtp;
     if (otpVerified) {

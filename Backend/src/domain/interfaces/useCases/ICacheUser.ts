@@ -1,4 +1,4 @@
-import { LoginUserDTO } from "application/dtos/loginUserDTO";
+import { LoginUserDTO } from "application/dtos/User/loginUserDTO";
 
 export interface ICacheUserUseCase {
   cacheUser(user: LoginUserDTO): void;

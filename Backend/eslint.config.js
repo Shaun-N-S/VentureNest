@@ -8,7 +8,8 @@ import pluginPrettier from "eslint-plugin-prettier";
 export default [
   js.configs.recommended,
   {
-    files: ["**/*.ts"],
+    files: ["src/**/*.ts"],
+    ignores: ["dist/**", "node_modules/**"],
     languageOptions: {
       parser: tsParser,
       parserOptions: {
@@ -23,14 +24,13 @@ export default [
       prettier: pluginPrettier,
     },
     rules: {
-      "no-unused-vars": "off", // turn off base rule
+      "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": [
         "warn",
         {
           vars: "all",
-          args: "none", // ignore unused function arguments
+          args: "none",
           ignoreRestSiblings: true,
-          // argsIgnorePattern: "^_", // ignore args starting with _
         },
       ],
       "prettier/prettier": "error",

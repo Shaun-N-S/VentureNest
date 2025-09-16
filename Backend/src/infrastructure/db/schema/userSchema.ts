@@ -1,60 +1,51 @@
 import mongoose from "mongoose";
 import { UserRole } from "../../../domain/enums/userRole";
 import { UserStatus } from "../../../domain/enums/userStatus";
+import { PreferredSector } from "../../../domain/enums/preferredSectors";
 
-const userSchema = new mongoose.Schema({
-  userName: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  linkedInUrl: {
-    type: String,
-  },
-  profileImg: {
-    type: String,
-  },
-  website: {
-    type: String,
-  },
-  bio: {
-    type: String,
-  },
-  interestedTopics: [
-    {
+const userSchema = new mongoose.Schema(
+  {
+    userName: { type: String, required: true },
+    email: {
       type: String,
+      required: true,
+      unique: true,
     },
-  ],
-  role: {
-    type: String,
-    enum: Object.values(UserRole),
-    default: UserRole.USER,
+    password: { type: String, required: true },
+    isFirstLogin: { type: Boolean, default: true },
+
+    linkedInUrl: { type: String },
+    profileImg: { type: String },
+    website: { type: String },
+    bio: { type: String },
+    dateOfBirth: { type: Date },
+    phoneNumber: { type: String, index: true },
+    address: { type: String },
+
+    interestedTopics: [
+      {
+        type: String,
+        enum: Object.values(PreferredSector),
+      },
+    ],
+
+    aadharImg: { type: String },
+    selfieImg: { type: String },
+    adminVerified: { type: Boolean, default: false },
+    verifiedAt: { type: Date },
+
+    role: {
+      type: String,
+      enum: Object.values(UserRole),
+      default: UserRole.USER,
+    },
+    status: {
+      type: String,
+      enum: Object.values(UserStatus),
+      default: UserStatus.ACTIVE,
+    },
   },
-  status: {
-    type: String,
-    enum: Object.values(UserStatus),
-    default: UserStatus.ACTIVE,
-  },
-  adminVerified: {
-    type: Boolean,
-    default: false,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+  { timestamps: true }
+);
 
 export default userSchema;

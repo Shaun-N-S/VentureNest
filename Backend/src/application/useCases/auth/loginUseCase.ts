@@ -1,4 +1,6 @@
-import { LoginUserDTO } from "application/dtos/loginUserDTO";
+import { Errors, USER_ERRORS } from "@shared/constants/errors";
+import { LoginUserDTO } from "application/dtos/User/loginUserDTO";
+import { UserMapper } from "application/mappers/userMappers";
 import { UserStatus } from "domain/enums/userStatus";
 import { IUserRepository } from "domain/interfaces/repositories/IUserRepository";
 import { IHashPasswordService } from "domain/interfaces/services/IHashPasswordService";
@@ -17,34 +19,21 @@ export class UserLoginUseCase implements IUserLoginUseCase {
     const user = await this._userRepository.findByEmail(email);
 
     if (!user) {
-      throw new Error("User not found");
+      throw new Error(USER_ERRORS.USER_NOT_FOUND);
     }
 
     if (user.status === UserStatus.BLOCKED) {
-      throw new Error("User is blocked");
+      throw new Error(USER_ERRORS.USER_BLOCKED);
     }
 
     const verifyPassword = await this._hashService.compare(password, user.password);
 
     if (!verifyPassword) {
-      throw new Error("Invalid Password");
+      throw new Error(Errors.INVALID_CREDENTIALS);
     }
 
-    const responseData: LoginUserDTO = {
-      _id: user._id!,
-      email: user.email,
-      userName: user.userName,
-      linkedInUrl: user.linkedInUrl,
-      profileImg: user.profileImg,
-      website: user.website,
-      bio: user.bio,
-      interestedTopics: user.interestedTopics,
-      role: user.role,
-      status: user.status,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    };
+    const response: LoginUserDTO = UserMapper.toLoginUserResponseDTO(user);
 
-    return responseData;
+    return response;
   }
 }
